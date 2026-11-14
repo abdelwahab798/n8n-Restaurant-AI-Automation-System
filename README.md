@@ -8,7 +8,8 @@ An end-to-end automated restaurant management system built with **n8n**. This pr
 ![n8n Workflow Architecture](assets/Workflow.png)
 
 ### Live Demo
-
+<video src="https://github.com/abdelwahab798/n8n-Restaurant-AI-Automation-System/raw/main/assets/Video.mp4" controls="controls" style="max-width: 100%;">
+</video>
 ## Key Features
 
 - **Bilingual AI Telegram Order Agent (Arabic & English):** A smart conversational agent capable of understanding and responding to customer orders naturally in both Arabic and English, parsing requests into structured JSON, and calculating order totals.
