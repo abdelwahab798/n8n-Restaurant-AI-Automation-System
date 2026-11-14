@@ -1,0 +1,1599 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Taks",
+        "formDescription": "Set your Tasks",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Tasks"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -928,
+        464
+      ],
+      "id": "b19fdb57-cac9-4d76-9115-ecdd543020f0",
+      "name": "On form submission",
+      "webhookId": "f222b841-e30e-41f7-be02-4a319ab1af4c"
+    },
+    {
+      "parameters": {
+        "sendTo": "abdelwahabamr769@gmail.com",
+        "subject": "Taks",
+        "emailType": "text",
+        "message": "=Hi there is your tasks:\n{{ $json.Tasks }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -704,
+        464
+      ],
+      "id": "cf3969c7-8ad8-47ff-a69a-95eaf14cfd30",
+      "name": "Send a message",
+      "webhookId": "9866a2f4-44d0-4dd2-831a-514067975f06",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "3XJBjl72ptVLsfu1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas",
+          "mode": "list",
+          "cachedResultName": "Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 280257595,
+          "mode": "list",
+          "cachedResultName": "Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit#gid=280257595"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -128,
+        656
+      ],
+      "id": "835a884c-10bb-4623-bdd7-d78f24344ff6",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "ffa6c180-6773-49df-bb85-519c16aa4331",
+              "leftValue": "={{ $json[\"In-Stock\"] }}",
+              "rightValue": "={{ $('Get row(s) in sheet').item.json.Reorder_record }}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        1360,
+        736
+      ],
+      "id": "abaf8d79-0c18-407a-90f8-80656b302ce4",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "abdelwahabamr769@gmail.com",
+        "subject": "Out Of Stock",
+        "emailType": "text",
+        "message": "=Hi,\nThis item: {{ $json[\"Item Name\"] }} need to reorder\ndon't forget",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1664,
+        912
+      ],
+      "id": "3197774e-cab8-477a-8326-d7825d36d0e0",
+      "name": "Send a message1",
+      "webhookId": "142e376a-cf01-4d7d-9e23-3bdd29934d2d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "3XJBjl72ptVLsfu1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Tasks",
+        "height": 80,
+        "width": 214
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1184,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "9faa49fe-4470-49bc-9dbb-8e6c8cf1fdcc",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Orders",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1280,
+        672
+      ],
+      "id": "eb89772a-5238-49ae-bbad-058c4e88fcf5",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "formTitle": "Orders",
+        "formDescription": "Add order details",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Beef Burger",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "cheese Beef Burger",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "cheese Chicken Burger",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Chicken Burger",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "From",
+              "defaultValue": "Form"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -928,
+        672
+      ],
+      "id": "c5413f41-b1f8-4d4b-bddb-0d1ef3c87904",
+      "name": "On form submission1",
+      "webhookId": "83dcc6d2-ee3d-4395-9a08-0ed1451b92ae"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SonEGn18FlERTnsUj4q8v2J2mQb05vwUOBzsYrklQbU",
+          "mode": "list",
+          "cachedResultName": "Sales",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SonEGn18FlERTnsUj4q8v2J2mQb05vwUOBzsYrklQbU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sales",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SonEGn18FlERTnsUj4q8v2J2mQb05vwUOBzsYrklQbU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Beef Burger": "={{ $json[\"Beef Burger\"] }}",
+            "Chesse Beef Burger": "={{ $json[\"cheese Beef Burger\"] }}",
+            "Chesse Chiecken Burger": "={{ $json[\"cheese Chicken Burger\"] }}",
+            "Chiecken Burger": "={{ $json[\"Chicken Burger\"] }}",
+            "From": "={{ $json.From }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Order_id",
+              "displayName": "Order_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Beef Burger",
+              "displayName": "Beef Burger",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chiecken Burger",
+              "displayName": "Chiecken Burger",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chesse Chiecken Burger",
+              "displayName": "Chesse Chiecken Burger",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chesse Beef Burger",
+              "displayName": "Chesse Beef Burger",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "From",
+              "displayName": "From",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -752,
+        656
+      ],
+      "id": "5500b4b2-8b08-453e-9164-6a573c501320",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const usage = $('Code in JavaScript1').first().json;\nconst inventoryItems = $input.all();\n\nfor (const item of inventoryItems) {\n  const row = item.json;\n  const itemName = (row[\"Item Name\"] || \"\").trim();\n  const usedQty = usage[itemName] || 0;\n\n  if (usedQty > 0) {\n    row[\"In-Stock\"] = Math.max(0, (Number(row[\"In-Stock\"]) || 0) - usedQty);}\n}\n\nreturn inventoryItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        640
+      ],
+      "id": "69c0527a-7281-4b9b-8bf9-6f7132d59455",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 23
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -832,
+        880
+      ],
+      "id": "635b70f6-694a-421f-aca6-cb514cc3951a",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1SonEGn18FlERTnsUj4q8v2J2mQb05vwUOBzsYrklQbU",
+          "mode": "list",
+          "cachedResultName": "Sales",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SonEGn18FlERTnsUj4q8v2J2mQb05vwUOBzsYrklQbU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1840104256,
+          "mode": "list",
+          "cachedResultName": "Summary",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SonEGn18FlERTnsUj4q8v2J2mQb05vwUOBzsYrklQbU/edit#gid=1840104256"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -608,
+        880
+      ],
+      "id": "0ac38d33-53e7-4c98-a0a0-28ea6d6be213",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $input.all().map(i => `- ${i.json.Item}: ${i.json.Total}`).join('\\n') }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=انت محاسب للمطلعم ابعت تقرير كويس و منظم للمالك\nالرد بتاعك يكون في الاول السلام عليكم يا مدير اليك تقرير اليوم و بعدين تقول بقي التقرير و خلي الكلام عبارة عن text مش markdwon"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -384,
+        880
+      ],
+      "id": "29acaf3c-a162-4351-8cab-08e58907cae3",
+      "name": "Basic LLM Chain",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        1024
+      ],
+      "id": "ece44663-3afa-4b5a-8c85-8fcb29847488",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "abdelwahabamr769@gmail.com",
+        "subject": "Summary",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -16,
+        880
+      ],
+      "id": "c302bbd2-b1a9-4c05-8d38-dd4b70ac3fe9",
+      "name": "Send a message2",
+      "webhookId": "f1a1470a-d8cd-46f7-bd18-580ad927c0f0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "3XJBjl72ptVLsfu1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## summary for founder\n",
+        "height": 80,
+        "width": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        912
+      ],
+      "id": "ad6cb57d-99a7-4025-8f1c-51b407cc55c3",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $(\"Telegram Trigger\").item.json.message.chat.id }}",
+        "text": "={{ $json.output.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -112,
+        1200
+      ],
+      "id": "bc4f7548-12f4-4c9c-8ee6-3c6af9d418b6",
+      "name": "Send a text message",
+      "webhookId": "3e63cacf-0563-48f3-b9b2-309fd054f439",
+      "credentials": {
+        "telegramApi": {
+          "id": "CSHyj4hLGdpApwe5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -880,
+        1264
+      ],
+      "id": "923a3f94-a116-414d-b2d5-f4bab009354a",
+      "name": "Telegram Trigger",
+      "webhookId": "1cfe2f4f-8e59-4e7e-9b88-2f7d3ffeef0d",
+      "credentials": {
+        "telegramApi": {
+          "id": "CSHyj4hLGdpApwe5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"message\": {\n      \"type\": \"string\",\n      \"description\": \"Your answer\"\n    },\n    \"order\": {\n      \"type\": \"object\",\n      \"description\": \"Order details\",\n      \"properties\": {\n        \"components\": {\n          \"type\": \"array\",\n          \"description\": \"List of ordered items. Add a new object for each different sandwich.\",\n          \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"Name\": {\n                \"type\": \"string\",\n                \"description\": \"Name of sandwitch\"\n              },\n              \"Quntity\": {\n                \"type\": \"number\",\n                \"description\": \"Quntity ordered\"\n              }\n            }\n          }\n        },\n        \"status\": {\n          \"type\": \"boolean\",\n          \"description\": \"values you will add [True-False] only, True if customer confirmed a ready order, otherwise false\"\n        }\n      }\n    },\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"id\": {\n          \"type\": \"string\",\n          \"description\": \"message.chat.id\"\n        },\n        \"username\": {\n          \"type\": \"string\",\n          \"description\": \"message.chat.username\"\n        },\n        \"date\": {\n          \"type\": \"string\",\n          \"description\": \"message.date\"\n        },\n        \"from\": {\n          \"type\": \"string\",\n          \"description\": \"Telegram\"\n        }\n      }\n    }\n  }\n}",
+        "autoFix": "="
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -352,
+        1328
+      ],
+      "id": "644a907d-6f9e-4391-b3d7-7fe27e6f5b5d",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a professional and friendly order-taking assistant for a burger restaurant. \nCRITICAL RULE: Your responses to the customer (inside the 'message' field) MUST be exclusively in friendly Arabic (Egyptian dialect is preferred).\n\n### Menu & Prices:\n- Beef Burger: 50\n- Chesse Beef Burger: 55\n- Chicken Burger: 40\n- Chesse Chicken Burger: 55\n\n### System Metadata (CRITICAL & STRICT RULES):\nThe following data fields are provided by the system. You MUST inject them exactly as they are into the 'data' fields of your structured JSON output. \nNEVER change them. NEVER show them in your text response to the customer. \n- ID: {{ $json.message.chat.id }}\n- Date: {{ $json.message.date }}\n- Username: {{ $json.message.chat.username }}\n- from: Telegram\n\n### Conversation & Workflow Rules:\n1. **Taking the Order (Not Confirmed Yet - status: false)**:\n   - Greet the user in Arabic (e.g., \"أهلاً بيك! تحب تطلب إيه النهاردة؟\") and ask what they would like to order.\n   - When the user selects items, extract the quantities accurately. If the user changes their mind, replace the old quantities with the new ones.\n   - Summarize the order and the total calculated price in Arabic, then ask clearly for confirmation: \"تحب تأكد الأوردر على كده ولا نزود حاجة؟\"\n   - IMPORTANT: Set the \"status\" field in your JSON output to `false`.\n\n2. **Finalizing the Order (Confirmed - status: true)**:\n   - If the user confirms the order (e.g., by saying \"yes\", \"confirm\", \"ok\", \"تمام\", \"أكد\", \"ايوة\", \"مظبوط\"), you MUST immediately finalize it.\n   - Reply with a final thank you message in Arabic (e.g., \"شكراً ليك! تم تأكيد طلبك بنجاح وهنجهزه فوراً.\").\n   - DO NOT ask any further questions. DO NOT ask to confirm again.\n   - IMPORTANT: Change the \"status\" field in your JSON output to `true`.\n\n3. **General Data Rules**:\n   - For any burger not ordered, set its quantity to 0.\n   - If any general text field is missing or unknown, set its value to \"n/a\".\n   - Keep your Arabic responses to the customer concise and natural."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -544,
+        1184
+      ],
+      "id": "b23d71aa-5ba4-489d-ba82-c309c6593911",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-5",
+          "cachedResultName": "Claude Sonnet 5"
+        },
+        "options": {
+          "maxTokensToSample": 6000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.6,
+      "position": [
+        -576,
+        1376
+      ],
+      "id": "cfd1213d-2d05-44b8-8b6d-a518a47422a7",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const order = $('Append row in sheet').first().json;\n\nconst componentsRows = $input.all().map(item => item.json);\n\nconst totalUsage = {\n  \"Bread\": 0,\n  \"onino\": 0,\n  \"tomato\": 0,\n  \"Beef slice\": 0,\n  \"Chicken slice\": 0,\n  \"Chesse\": 0\n};\n\n// 4. المرور على كل سندوتش في الأوردر وحساب استهلاكه\nfor (const [key, qty] of Object.entries(order)) {\n  const quantity = Number(qty);\n  \n  // تجاهل الحقول غير الرقمية أو السندوتشات التي كميتها 0\n  if (isNaN(quantity) || quantity <= 0) continue;\n\n  // البحث عن السندوتش في شيت المكونات مع تجاهل حالة الأحرف والمسافات\n  const recipe = componentsRows.find(\n    row => row[\"Item Name\"] && row[\"Item Name\"].trim().toLowerCase() === key.trim().toLowerCase()\n  );\n\n  if (recipe) {\n    totalUsage[\"Bread\"] += (Number(recipe[\"Bread\"]) || 0) * quantity;\n    totalUsage[\"onino\"] += (Number(recipe[\"onino\"]) || 0) * quantity;\n    totalUsage[\"tomato\"] += (Number(recipe[\"tomato\"]) || 0) * quantity;\n    totalUsage[\"Beef slice\"] += (Number(recipe[\"Beef slice \"] ?? recipe[\"Beef slice\"]) || 0) * quantity;\n    totalUsage[\"Chicken slice\"] += (Number(recipe[\"Chicken slice \"] ?? recipe[\"Chicken slice\"]) || 0) * quantity;\n    totalUsage[\"Chesse\"] += (Number(recipe[\"Chesse\"]) || 0) * quantity;\n  }\n}\n\nreturn [{ json: totalUsage }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -336,
+        656
+      ],
+      "id": "3d61ec7a-45ed-4b8b-b6a9-381f840b8e76",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas",
+          "mode": "list",
+          "cachedResultName": "Inventory_1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 280257595,
+          "mode": "list",
+          "cachedResultName": "Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit#gid=280257595"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "In-Stock": "={{ $json['In-Stock'] }}",
+            "Item ID": "={{ $json['Item ID'] }}",
+            "Item Name": "={{ $json[\"Item Name\"] }}"
+          },
+          "matchingColumns": [
+            "Item ID"
+          ],
+          "schema": [
+            {
+              "id": "Item ID",
+              "displayName": "Item ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Item Name",
+              "displayName": "Item Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "In-Stock",
+              "displayName": "In-Stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reorder_record",
+              "displayName": "Reorder_record",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        640
+      ],
+      "id": "5081255b-8da1-45a8-a2df-9226fcf855ea",
+      "name": "Update row in sheet",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas",
+          "mode": "list",
+          "cachedResultName": "Inventory_1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Componts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -544,
+        656
+      ],
+      "id": "b2a9ed70-a5cd-4b6a-b48a-179be4e38f5d",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  const b=item.json[\"output\"][\"order\"][\"components\"]\n  return b\n}\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        1472
+      ],
+      "id": "a5b1d459-0b71-4680-b0bb-c88a0c5e17a0",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SonEGn18FlERTnsUj4q8v2J2mQb05vwUOBzsYrklQbU",
+          "mode": "list",
+          "cachedResultName": "Sales",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SonEGn18FlERTnsUj4q8v2J2mQb05vwUOBzsYrklQbU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sales",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SonEGn18FlERTnsUj4q8v2J2mQb05vwUOBzsYrklQbU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Chiecken Burger": "={{ $json[\"Chicken Burger\"] }}",
+            "Chesse Beef Burger": "={{ $json[\"Chesse Beef Burger\"] }}",
+            "Beef Burger": "={{ $json[\"Beef Burger\"] }}",
+            "Chesse Chiecken Burger": "={{ $json[\"chesse Chicken Burger\"] }}",
+            "From": "={{ $('AI Agent').item.json.output.data.from }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Order_id",
+              "displayName": "Order_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Beef Burger",
+              "displayName": "Beef Burger",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chiecken Burger",
+              "displayName": "Chiecken Burger",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chesse Chiecken Burger",
+              "displayName": "Chesse Chiecken Burger",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chesse Beef Burger",
+              "displayName": "Chesse Beef Burger",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "From",
+              "displayName": "From",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        1472
+      ],
+      "id": "40e18f58-77a7-470c-9acd-b48e9a779e27",
+      "name": "Append row in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. تعريف المنيو الأساسي بـ أصفار\nlet finalOrder = {\n  \"Beef Burger\": 0,\n  \"Chicken Burger\": 0,\n  \"Chesse Beef Burger\": 0,\n  \"chesse Chicken Burger\": 0\n};\n\n// 2. اللف على كل الـ Items اللي داخلة للـ Node\nlet items = $input.all();\n\nfor (let item of items) {\n    let data = item.json;\n\n    if (data.Name !== undefined && data.Quntity !== undefined) {\n        if (finalOrder[data.Name] !== undefined) {\n            finalOrder[data.Name] = data.Quntity;\n        }\n    }\n}\n   \n\nreturn [{\n  json: finalOrder\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        1264
+      ],
+      "id": "bc8f612e-8f4b-4f58-aa4e-b13ce81d281b",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas",
+          "mode": "list",
+          "cachedResultName": "Inventory_1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Componts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        704,
+        1248
+      ],
+      "id": "4c812dc5-cd84-4308-8005-ad6b05c6479d",
+      "name": "Get row(s) in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const order = $('Append row in sheet4').first().json;\n\nconst componentsRows = $input.all().map(item => item.json);\n\nconst totalUsage = {\n  \"Bread\": 0,\n  \"onino\": 0,\n  \"tomato\": 0,\n  \"Beef slice\": 0,\n  \"Chicken slice\": 0,\n  \"Chesse\": 0\n};\n\n// 4. المرور على كل سندوتش في الأوردر وحساب استهلاكه\nfor (const [key, qty] of Object.entries(order)) {\n  const quantity = Number(qty);\n  \n  // تجاهل الحقول غير الرقمية أو السندوتشات التي كميتها 0\n  if (isNaN(quantity) || quantity <= 0) continue;\n\n  // البحث عن السندوتش في شيت المكونات مع تجاهل حالة الأحرف والمسافات\n  const recipe = componentsRows.find(\n    row => row[\"Item Name\"] && row[\"Item Name\"].trim().toLowerCase() === key.trim().toLowerCase()\n  );\n\n  if (recipe) {\n    totalUsage[\"Bread\"] += (Number(recipe[\"Bread\"]) || 0) * quantity;\n    totalUsage[\"onino\"] += (Number(recipe[\"onino\"]) || 0) * quantity;\n    totalUsage[\"tomato\"] += (Number(recipe[\"tomato\"]) || 0) * quantity;\n    totalUsage[\"Beef slice\"] += (Number(recipe[\"Beef slice \"] ?? recipe[\"Beef slice\"]) || 0) * quantity;\n    totalUsage[\"Chicken slice\"] += (Number(recipe[\"Chicken slice \"] ?? recipe[\"Chicken slice\"]) || 0) * quantity;\n    totalUsage[\"Chesse\"] += (Number(recipe[\"Chesse\"]) || 0) * quantity;\n  }\n}\n\nreturn [{ json: totalUsage }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        1424
+      ],
+      "id": "208c23da-0927-4759-86c7-90267218b4cc",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const usage = $('Code in JavaScript4').first().json;\nconst inventoryItems = $input.all();\n\nfor (const item of inventoryItems) {\n  const row = item.json;\n  const itemName = (row[\"Item Name\"] || \"\").trim();\n  const usedQty = usage[itemName] || 0;\n\n  if (usedQty > 0) {\n    row[\"In-Stock\"] = Math.max(0, (Number(row[\"In-Stock\"]) || 0) - usedQty);}\n}\n\nreturn inventoryItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        1408
+      ],
+      "id": "4fae1534-76c0-4e16-bbab-7eeef8073fad",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas",
+          "mode": "list",
+          "cachedResultName": "Inventory_1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 280257595,
+          "mode": "list",
+          "cachedResultName": "Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit#gid=280257595"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        944,
+        1232
+      ],
+      "id": "06e29c9d-453d-4709-9c98-c3bcaa7d91f1",
+      "name": "Get row(s) in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas",
+          "mode": "list",
+          "cachedResultName": "Inventory_1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 280257595,
+          "mode": "list",
+          "cachedResultName": "Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HCSQtziCt6_E2zTRx2lbAQ76k01kTXOni0j2GO0JMas/edit#gid=280257595"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Item ID": "={{ $json[\"Item ID\"] }}",
+            "In-Stock": "={{ $json[\"In-Stock\"] }}",
+            "Reorder_record": "={{ $json.Reorder_record }}",
+            "Item Name": "={{ $json[\"Item Name\"] }}"
+          },
+          "matchingColumns": [
+            "Item ID"
+          ],
+          "schema": [
+            {
+              "id": "Item ID",
+              "displayName": "Item ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Item Name",
+              "displayName": "Item Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "In-Stock",
+              "displayName": "In-Stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reorder_record",
+              "displayName": "Reorder_record",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        1200
+      ],
+      "id": "40ae146d-27bc-497d-812a-0517e0605784",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Telegram workflow\n\n",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1232,
+        1280
+      ],
+      "id": "95814a70-9f77-4374-8dcf-d04e96b3a68a",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1GPg8y_Sre3tfV8ENy1tHZjkn7FuH7UEZjfD8t156MPM",
+          "mode": "list",
+          "cachedResultName": "Telegram customer services",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GPg8y_Sre3tfV8ENy1tHZjkn7FuH7UEZjfD8t156MPM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "messages history",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GPg8y_Sre3tfV8ENy1tHZjkn7FuH7UEZjfD8t156MPM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+            "status": "={{ $json.output.order.status }}",
+            "output": "={{ $json.output.message }}",
+            "ID": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+            "Username": "={{ $('Telegram Trigger').item.json.message.chat.username }}",
+            "date": "={{ DateTime.fromSeconds(Number($json.output.data.date)).toFormat('yyyy-MM-dd hh:mm a') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        1664
+      ],
+      "id": "01dd137c-bbe9-4180-9dff-cf32271a416e",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yWmOJJQI1MXXTlDm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "c5dff478-59b9-4080-9ed9-91cad9318980",
+              "leftValue": "={{ $json.output.order.status }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        16,
+        1456
+      ],
+      "id": "4faf7e71-5ef9-4a30-937e-784a7e282588",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -464,
+        1488
+      ],
+      "id": "05402371-5faa-4224-b031-421595847003",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "b1c9ab17-540d-4814-88a0-ec9fdc6010f4",
+              "leftValue": "={{ $json[\"In-Stock\"] }}",
+              "rightValue": "={{ $json.Reorder_record }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        1424,
+        1184
+      ],
+      "id": "a08b1f18-f90b-45e6-8447-b6227f6cb11a",
+      "name": "If2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet4": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet4": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "2eeaaaf2-c975-42eb-ad77-cfaa830e01e3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "420e4d9add83f49612102237fd1d30667b9cc2c661d458de8a4c93b378f67d9a"
+  },
+  "nodeGroups": [],
+  "id": "Bidq0cHKDsIWQxfI",
+  "tags": []
+}
